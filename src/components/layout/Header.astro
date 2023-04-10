@@ -1,0 +1,126 @@
+---
+import ThemeToggle from "../ThemeToggle.astro";
+import { MENU_LINKS } from "@/data/constants";
+
+const url = new URL(Astro.request.url);
+---
+
+<script>
+	import { toggleClass } from "@/utils";
+
+	document.addEventListener("DOMContentLoaded", () => {
+		const header = document.getElementById("main-header") as HTMLElement;
+		const toggleMenuButton = document.getElementById("toggle-navigation-menu") as HTMLButtonElement;
+		let menuOpen = false;
+
+		toggleMenuButton.addEventListener("click", () => {
+			toggleClass(header, "menu-open");
+			menuOpen = !menuOpen;
+			toggleMenuButton.setAttribute("aria-expanded", menuOpen.toString());
+		});
+	});
+</script>
+
+<header id="main-header" class="group relative mb-28 flex items-center sm:pl-[4.5rem]">
+	<div class="flex sm:flex-col">
+		<a
+			href="/"
+			class="inline-flex items-center grayscale hover:filter-none sm:relative sm:inline-block"
+			aria-current={url.pathname === "/" ? "page" : false}
+		>
+			<svg
+				class="mr-3 h-10 w-6 sm:absolute sm:left-[-4.5rem] sm:mr-0 sm:h-16 sm:w-12"
+				aria-hidden="true"
+				focusable="false"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 38.000089 42.000031"
+			>
+				<title>Logo</title>
+				<path
+					fill="#283593"
+					fill-rule="evenodd"
+					d="m 17.903,0.28628166 c 0.679,-0.381 1.515,-0.381 2.193,0 C 23.451,2.1692817 33.547,7.8372817 36.903,9.7202817 37.582,10.100282 38,10.804282 38,11.566282 c 0,3.766 0,15.101 0,18.867 0,0.762 -0.418,1.466 -1.097,1.847 -3.355,1.883 -13.451,7.551 -16.807,9.434 -0.679,0.381 -1.515,0.381 -2.193,0 -3.355,-1.883 -13.451,-7.551 -16.807,-9.434 -0.678,-0.381 -1.096,-1.084 -1.096,-1.846 0,-3.766 0,-15.101 0,-18.867 0,-0.762 0.418,-1.466 1.097,-1.8470003 3.354,-1.883 13.452,-7.551 16.806,-9.43400004 z"
+					clip-rule="evenodd"
+					id="path2"
+					style="fill:#004482;fill-opacity:1"></path>
+				<path
+					fill="#5c6bc0"
+					fill-rule="evenodd"
+					d="m 0.304,31.404282 c -0.266,-0.356 -0.304,-0.694 -0.304,-1.149 0,-3.744 0,-15.014 0,-18.759 0,-0.758 0.417,-1.458 1.094,-1.8360003 3.343,-1.872 13.405,-7.507 16.748,-9.38000004 0.677,-0.379 1.594,-0.371 2.271,0.008 3.343,1.87200004 13.371,7.45900004 16.714,9.33100004 0.27,0.152 0.476,0.335 0.66,0.5760003 z"
+					clip-rule="evenodd"
+					id="path4"
+					style="fill:#659ad2;fill-opacity:1"></path>
+				<path
+					fill="#ffffff"
+					fill-rule="evenodd"
+					d="m 19,7.0002817 c 7.727,0 14,6.2730003 14,14.0000003 0,7.727 -6.273,14 -14,14 -7.727,0 -14,-6.273 -14,-14 0,-7.727 6.273,-14.0000003 14,-14.0000003 z m 0,7.0000003 c 3.863,0 7,3.136 7,7 0,3.863 -3.137,7 -7,7 -3.863,0 -7,-3.137 -7,-7 0,-3.864 3.136,-7 7,-7 z"
+					clip-rule="evenodd"
+					id="path6"></path>
+				<path
+					fill="#3949ab"
+					fill-rule="evenodd"
+					d="m 37.485,10.205282 c 0.516,0.483 0.506,1.211 0.506,1.784 0,3.795 -0.032,14.589 0.009,18.384 0.004,0.396 -0.127,0.813 -0.323,1.127 l -19.084,-10.5 z"
+					clip-rule="evenodd"
+					id="path8"
+					style="fill:#00599c;fill-opacity:1"></path>
+			</svg>
+			<span class="text-xl font-bold sm:text-2xl">caio</span>
+		</a>
+		<nav
+			id="navigation-menu"
+			class="absolute -inset-x-4 top-14 hidden flex-col items-end gap-y-4 rounded-md bg-[color:var(--theme-menu-bg)] py-4 text-accent shadow backdrop-blur group-[.menu-open]:z-50 group-[.menu-open]:flex sm:static sm:z-auto sm:mt-1 sm:-ml-4 sm:flex sm:flex-row sm:items-center sm:divide-x sm:divide-dashed sm:divide-accent sm:rounded-none sm:bg-transparent sm:py-0 sm:shadow-none sm:backdrop-blur-none"
+			aria-label="Main menu"
+		>
+			{
+				MENU_LINKS.map((link) => (
+					<a
+						href={link.path}
+						class="py-4 px-4 sm:py-0 sm:hover:underline"
+						aria-current={url.pathname === link.path ? "page" : false}
+						rel="prefetch"
+					>
+						{link.title}
+					</a>
+				))
+			}
+		</nav>
+	</div>
+	<ThemeToggle />
+	<button
+		id="toggle-navigation-menu"
+		class="group relative ml-8 h-7 w-7 sm:invisible sm:hidden"
+		type="button"
+		aria-label="Open main menu"
+		aria-expanded="false"
+		aria-haspopup="menu"
+	>
+		<svg
+			id="line-svg"
+			class="absolute top-1/2 left-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transition-all group-aria-expanded:scale-0 group-aria-expanded:opacity-0"
+			aria-hidden="true"
+			focusable="false"
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke-width="1.5"
+			stroke="currentColor"
+		>
+			<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5"></path>
+		</svg>
+		<svg
+			id="cross-svg"
+			class="absolute top-1/2 left-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 scale-0 text-accent opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100"
+			class="text-accent"
+			aria-hidden="true"
+			focusable="false"
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke-width="1.5"
+			stroke="currentColor"
+		>
+			<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+		</svg>
+	</button>
+</header>
